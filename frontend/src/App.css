@@ -1,0 +1,162 @@
+* {
+  box-sizing: border-box;
+  }
+
+body {
+margin: 0;
+font-family: Arial, Helvetica, sans-serif;
+background: #0b1020;
+color: #f8fafc;
+}
+
+button,
+input {
+font: inherit;
+}
+
+.app-container {
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 24px;
+background:
+radial-gradient(circle at top left, #243b67 0, transparent 40%),
+radial-gradient(circle at bottom right, #392052 0, transparent 40%),
+#0b1020;
+}
+
+.auth-card {
+width: 100%;
+max-width: 410px;
+padding: 36px;
+border: 1px solid #29334b;
+border-radius: 22px;
+background: rgba(17, 24, 43, 0.96);
+box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+}
+
+.logo {
+width: 56px;
+height: 56px;
+display: grid;
+place-items: center;
+margin: 0 auto 18px;
+border-radius: 18px;
+background: linear-gradient(135deg, #818cf8, #a855f7);
+font-size: 28px;
+font-weight: 800;
+}
+
+h1 {
+margin: 0;
+text-align: center;
+font-size: 30px;
+letter-spacing: -1px;
+}
+
+.subtitle {
+margin: 10px 0 28px;
+text-align: center;
+color: #aab4ca;
+font-size: 14px;
+}
+
+.auth-tabs {
+display: flex;
+gap: 8px;
+padding: 5px;
+margin-bottom: 24px;
+border-radius: 12px;
+background: #0b1020;
+}
+
+.auth-tabs button {
+flex: 1;
+padding: 11px;
+border: 0;
+border-radius: 9px;
+color: #aab4ca;
+background: transparent;
+cursor: pointer;
+}
+
+.auth-tabs button.active {
+color: white;
+background: #29334b;
+}
+
+form {
+display: flex;
+flex-direction: column;
+}
+
+label {
+margin-bottom: 8px;
+color: #e2e8f0;
+font-size: 13px;
+}
+
+input {
+width: 100%;
+padding: 13px 14px;
+margin-bottom: 20px;
+border: 1px solid #34405a;
+border-radius: 10px;
+outline: none;
+color: white;
+background: #0b1020;
+}
+
+input:focus {
+border-color: #818cf8;
+box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+}
+
+input::placeholder {
+color: #74809a;
+}
+
+.submit-btn {
+padding: 14px;
+margin-top: 4px;
+border: 0;
+border-radius: 10px;
+color: white;
+background: linear-gradient(100deg, #6366f1, #9333ea);
+font-weight: 700;
+cursor: pointer;
+}
+
+.submit-btn:hover {
+opacity: 0.9;
+}
+
+.security-note {
+margin: 24px 0 0;
+text-align: center;
+color: #aab4ca;
+font-size: 12px;
+}
+
+@media (max-width: 480px) {
+.auth-card {
+padding: 26px 22px;
+}
+}
+
+:root { --app-bg:#0b141a; --app-text:#e9edef; --panel-bg:#111b21; --panel-border:#26353d; --field-bg:#202c33; --muted-text:#9eacb4; }
+:root[data-theme="light"] { --app-bg:#f0f2f5; --app-text:#17252b; --panel-bg:#ffffff; --panel-border:#d9e1e5; --field-bg:#f0f2f5; --muted-text:#647780; }
+:root[data-theme="light"] body { background:#f0f2f5; color:#17252b; }
+:root[data-theme="light"] .chat-page { background:#f0f2f5 !important; color:#17252b !important; }
+:root[data-theme="light"] .chat-shell { background:#fff !important; border-color:#d9e1e5 !important; }
+:root[data-theme="light"] .chat-header, :root[data-theme="light"] .chat-compose { background:#fff !important; border-color:#d9e1e5 !important; color:#17252b !important; }
+:root[data-theme="light"] .chat-messages { background:#f4f7f8 !important; }
+:root[data-theme="light"] .chat-bubble.theirs { background:#e6ecef !important; color:#17252b !important; border-color:#d4dde1 !important; }
+:root[data-theme="light"] .chat-compose input[type=text], :root[data-theme="light"] .chat-compose select, :root[data-theme="light"] .chat-compose input[type=number] { background:#f4f7f8 !important; color:#17252b !important; border-color:#d4dde1 !important; }
+:root[data-theme="light"] .chat-title, :root[data-theme="light"] .chat-empty { color:#17252b !important; }
+:root[data-theme="light"] .calls-page { background:var(--app-bg) !important; color:var(--app-text) !important; }
+:root[data-theme="light"] .calls-card { background:var(--panel-bg) !important; border-color:var(--panel-border) !important; }
+:root[data-theme="light"] main[style*="#0b141a"] { background:#f0f2f5 !important; color:#17252b !important; }
+:root[data-theme="light"] main[style*="#0b141a"] section[style*="#111b21"], :root[data-theme="light"] main[style*="#0b141a"] form[style*="#111b21"] { background:#fff !important; border-color:#d9e1e5 !important; }
+:root[data-theme="light"] main[style*="#0b141a"] input, :root[data-theme="light"] main[style*="#0b141a"] textarea, :root[data-theme="light"] main[style*="#0b141a"] select { background:#f4f7f8 !important; color:#17252b !important; border-color:#d4dde1 !important; }
