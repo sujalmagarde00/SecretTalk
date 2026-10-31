@@ -1,7 +1,16 @@
 package com.secretalk.backend.controller;
-import com.secretalk.backend.dto.UserProfileDTO; import com.secretalk.backend.entity.User; import com.secretalk.backend.repository.UserRepository; import com.secretalk.backend.service.PresenceService;
-import org.springframework.http.HttpStatus; import org.springframework.web.bind.annotation.*; import org.springframework.web.server.ResponseStatusException; import java.security.Principal; import java.util.List;
-@RestController @RequestMapping("/api/users") @CrossOrigin(origins="http://localhost:5173")
+import com.secretalk.backend.dto.UserProfileDTO;
+import com.secretalk.backend.entity.User;
+import com.secretalk.backend.repository.UserRepository; 
+import com.secretalk.backend.service.PresenceService;
+import org.springframework.http.HttpStatus; 
+import org.springframework.web.bind.annotation.*; 
+import org.springframework.web.server.ResponseStatusException; 
+import java.security.Principal; 
+import java.util.List;
+@RestController
+@RequestMapping("/api/users")
+//@CrossOrigin(origins="http://localhost:5173")
 public class UserController {
  private final UserRepository users; private final PresenceService presence;
  public UserController(UserRepository users, PresenceService presence){this.users=users;this.presence=presence;}

@@ -34,32 +34,86 @@ export default function Home() {
   }, [theme]);
 
   useEffect(() => {
-    fetch(`${API}/api/auth/me`, { credentials: "include" })
-      .then(async (r) => { if (!r.ok) throw new Error("Please login first"); return r.json(); })
-      .then((data) => setMe(data))
-      .catch(() => navigate("/login", { replace: true, state: { message: "Please login to continue." } }));
-    loadConversations();
-    const timer = setInterval(loadConversations, 5000);
-    const socket = new WebSocket(WS_URL);
-    socket.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        if (data.type === "chat") {
-          loadConversations();
-          const msg = data.message || data;
-          if (!me || String(msg.senderId) !== String(me.id)) {
+  let socket;
+  let timer;
+  let cancelled = false;
+
+  async function initializeHome() {
+    try {
+      const response = await fetch(`${API}/api/auth/me`, {
+        credentials: "include"
+      });
+
+      if (!response.ok) {
+        throw new Error("Please login first");
+      }
+
+      const data = await response.json();
+
+      if (cancelled) return;
+
+      setMe(data);
+
+      // Authentication verify hone ke baad hi conversations load karo
+      await loadConversations();
+
+      if (cancelled) return;
+
+      timer = setInterval(loadConversations, 5000);
+
+      socket = new WebSocket(WS_URL);
+
+      socket.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data);
+
+          if (message.type === "chat") {
+            loadConversations();
             setUnreadCount(n => n + 1);
-            setPopupMessage(`New message from ${msg.senderUsername || "someone"}`);
-            if ("Notification" in window && Notification.permission === "granted") {
-              try { new Notification(`SecretTalk · ${msg.senderUsername || "New message"}`, { body: msg.content || (msg.attachmentName ? `📎 ${msg.attachmentName}` : "New message") }); } catch {}
+
+            setPopupMessage(
+              `New message from ${message.senderUsername || "someone"}`
+            );
+
+            if (
+              "Notification" in window &&
+              Notification.permission === "granted"
+            ) {
+              new Notification("SecretTalk", {
+                body: message.content || "New message"
+              });
             }
-            window.setTimeout(() => setPopupMessage(""), 4500);
+
+            setTimeout(() => setPopupMessage(""), 4500);
           }
+        } catch (error) {
+          console.error("WebSocket message error:", error);
         }
-      } catch {}
-    };
-    return () => { clearInterval(timer); socket.close(); };
-  }, [navigate, loadConversations, me]);
+      };
+
+      socket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+      };
+
+    } catch (error) {
+      if (!cancelled) {
+        navigate("/login", {
+          replace: true,
+          state: { message: "Please login to continue." }
+        });
+      }
+    }
+  }
+
+  initializeHome();
+
+  return () => {
+    cancelled = true;
+    clearInterval(timer);
+    if (socket) socket.close();
+  };
+``
+}, [navigate, loadConversations]);
 
   useEffect(() => {
     const q = query.trim();

@@ -21,21 +21,26 @@ public class SecurityConfig {
                     String configuredOrigins = System.getenv().getOrDefault("APP_CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173");
                     config.setAllowedOrigins(java.util.Arrays.stream(configuredOrigins.split(",")).map(String::trim).filter(v -> !v.isEmpty()).toList());
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                    config.setAllowedHeaders(List.of("Content-Type", "X-Requested-With"));
+                    config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
                     return config;
                 }))
                 .csrf(csrf -> csrf.disable())
                 .securityContext(context -> context.securityContextRepository(securityContextRepository()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login", "/api/auth/logout").permitAll()
-                        .requestMatchers("/api/users/me", "/api/call-history/**").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/", "/api/health", "/api/users/search", "/api/users/*").permitAll()
-                        .requestMatchers("/ws").authenticated()
-                        .anyRequest().authenticated())
-                .httpBasic(basic -> basic.disable())
-                .formLogin(form -> form.disable());
-        return http.build();
+    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+    .requestMatchers(
+        HttpMethod.POST,
+        "/api/auth/register",
+        "/api/auth/login",
+        "/api/auth/logout"
+    ).permitAll()
+    .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()
+    .requestMatchers("/api/users/me", "/api/call-history/**").authenticated()
+    .requestMatchers(HttpMethod.GET, "/", "/api/health", "/api/users/search", "/api/users/*").permitAll()
+    .requestMatchers("/ws").authenticated()
+    .anyRequest().authenticated()
+                );
+        return http.build();    
     }
 }
